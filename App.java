@@ -9,19 +9,21 @@ public class App {
     Thread t = new Thread(
         () -> {
           while (r.running) {
-            System.out.println("tick");
+            System.out.println(System.currentTimeMillis() + " tick");
             try {
-              Thread.sleep(1000);
+              long now = System.currentTimeMillis();
+              long next = ((now / 1000) + 1) * 1000;
+              Thread.sleep(next - now);
             } catch (InterruptedException e) {
-              // TODO Auto-generated catch block
-                r.running = false;
+              r.running = false;
               e.printStackTrace();
             }
           }
           System.out.println("stopped");
         });
-        t.start();
-        Thread.sleep(5000);
-        r.running = false;
+    t.start();
+    Thread.sleep(5000);
+    r.running = false;
+    t.join();
   }
 }
